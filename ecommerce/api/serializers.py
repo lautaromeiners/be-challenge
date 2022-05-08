@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Product, Order, OrderDetail
+from .services import get_usd_price
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,9 +24,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_total(self, order):
         total = 0
-        for orderdetail in order.order_detail.all():
-            total = total + orderdetail.product.price * orderdetail.cuantity
+        for detail in order.order_detail.all():
+            total = total + detail.product.price * detail.quantity
         return total
 
     def get_total_usd(self, order):
-        pass
+        usd = get_usd_price()
+        total_usd = self.get_total(order) / usd
+
+        return round(total_usd, 2)
+
