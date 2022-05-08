@@ -5,6 +5,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
     stock = models.IntegerField()
+    products = models.Manager()
 
     class Meta:
         verbose_name = 'Product'
@@ -16,6 +17,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     date_time = models.DateTimeField(default=timezone.now)
+    orders = models.Manager()
 
     class Meta:
         verbose_name = 'Order'
@@ -29,6 +31,7 @@ class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_detail')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    details = models.Manager()
 
     class Meta:
         verbose_name = 'Order Detail'
